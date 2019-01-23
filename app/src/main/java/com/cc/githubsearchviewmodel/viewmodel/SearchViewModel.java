@@ -16,6 +16,10 @@ public class SearchViewModel extends ViewModel {
 
     private SearchRepository repository;
 
+    /**
+     * SearchRepository injection from SearchViewModel constructor
+     * @param searchRepository repository for search module
+     */
     @Inject
     public SearchViewModel(SearchRepository searchRepository) {
         this.repository = searchRepository;
