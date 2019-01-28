@@ -14,7 +14,7 @@ public class SearchViewModel extends ViewModel {
 
     private LiveData<SearchResponse> searchResponse;
 
-    private SearchRepository repository;
+    private final SearchRepository repository;
 
     /**
      * SearchRepository injection from SearchViewModel constructor

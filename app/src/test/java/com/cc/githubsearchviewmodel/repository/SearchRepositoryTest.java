@@ -1,6 +1,7 @@
 package com.cc.githubsearchviewmodel.repository;
 
 import com.cc.githubsearchviewmodel.Contract.GitHubService;
+import com.cc.githubsearchviewmodel.database.dao.SearchResultDao;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +13,6 @@ import java.util.concurrent.Executor;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 public class SearchRepositoryTest {
 
@@ -24,11 +24,14 @@ public class SearchRepositoryTest {
     @Mock
     private Executor executor;
 
+    @Mock
+    private SearchResultDao searchResultDao;
+
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        repository = Mockito.spy(new SearchRepository(gitHubService, executor));
+        repository = Mockito.spy(new SearchRepository(gitHubService, executor,searchResultDao));
     }
 
     @SuppressWarnings("unchecked")
@@ -42,7 +45,7 @@ public class SearchRepositoryTest {
         //Mockito.doReturn(call).when(gitHubService).getSearchResults(null);
 
         // trigger
-        repository.getSearchResults(searchQuery, null);
+        repository.getSearchResults(searchQuery);
 
         // validation
         Mockito.verify(gitHubService, Mockito.times(1)).getSearchResults(searchQuery);
