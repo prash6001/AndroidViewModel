@@ -1,6 +1,9 @@
 package com.cc.githubsearchviewmodel.di.modules;
 
+import android.content.Context;
+
 import com.cc.githubsearchviewmodel.Contract.GitHubService;
+import com.cc.githubsearchviewmodel.database.dao.SearchResultDao;
 import com.cc.githubsearchviewmodel.repository.SearchRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,36 +18,42 @@ import dagger.Provides;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.cc.githubsearchviewmodel.applicationpack.GitHubSearchApplication.context;
+
 @Module(includes = ViewModelModule.class)
 public class AppModule {
 
-    // --- REPOSITORY INJECTION ---
+    @Singleton
+    @Provides
+    public Context provideContext(){
+        return context;
+    }
 
+    // --- EXECUTOR INJECTION ---
     @Provides
     Executor provideExecutor() {
         return Executors.newSingleThreadExecutor();
     }
 
+    // --- REPOSITORY INJECTION ---
     @Provides
     @Singleton
-    SearchRepository provideSearchRepository(GitHubService webservice,Executor executor) {
-        return new SearchRepository(webservice,executor);
+    SearchRepository provideSearchRepository(GitHubService webservice,Executor executor, SearchResultDao searchResultDao) {
+        return new SearchRepository(webservice,executor,searchResultDao);
     }
 
     // --- NETWORK INJECTION ---
-
-    private static String BASE_URL = "https://api.github.com/";
 
     @Provides
     Gson provideGson() { return new GsonBuilder().create(); }
 
     @Provides
     Retrofit provideRetrofit(Gson gson) {
-        Retrofit retrofit = new Retrofit.Builder()
+        String BASE_URL = "https://api.github.com/";
+        return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(BASE_URL)
                 .build();
-        return retrofit;
     }
 
     @Provides
@@ -52,4 +61,5 @@ public class AppModule {
     GitHubService provideApiWebservice(Retrofit restAdapter) {
         return restAdapter.create(GitHubService.class);
     }
+
 }

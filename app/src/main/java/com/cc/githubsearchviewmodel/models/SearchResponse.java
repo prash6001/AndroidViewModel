@@ -16,7 +16,7 @@ public class SearchResponse {
     @Nullable
     @SerializedName("items")
     @Expose
-    private List<SearchResult> searchResults = null;
+    private final List<SearchResult> searchResults = null;
 
     @Nullable
     public Integer getTotalCount() {

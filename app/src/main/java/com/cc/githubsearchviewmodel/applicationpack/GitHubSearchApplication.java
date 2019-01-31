@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
+
 import com.cc.githubsearchviewmodel.di.component.DaggerAppComponent;
 
 import javax.inject.Inject;
@@ -15,6 +16,7 @@ public class GitHubSearchApplication extends Application implements HasActivityI
 
     @Inject
     DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
+
 
     public static Context context;
 
@@ -35,5 +37,6 @@ public class GitHubSearchApplication extends Application implements HasActivityI
     private void initDagger(){
         DaggerAppComponent.builder().application(this).build().inject(this);
     }
+
 
 }

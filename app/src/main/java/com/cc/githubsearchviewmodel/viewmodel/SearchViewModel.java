@@ -1,20 +1,25 @@
 package com.cc.githubsearchviewmodel.viewmodel;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.cc.githubsearchviewmodel.Contract.Search.SearchViewModelContract;
 import com.cc.githubsearchviewmodel.models.SearchResponse;
 import com.cc.githubsearchviewmodel.repository.SearchRepository;
 
 import javax.inject.Inject;
 
-public class SearchViewModel extends ViewModel {
+public class SearchViewModel extends ViewModel implements SearchViewModelContract, LifecycleOwner {
 
-    private LiveData<SearchResponse> searchResponse;
+    private MutableLiveData<SearchResponse> searchResponse = new MutableLiveData<>();
 
-    private SearchRepository repository;
+    private final SearchRepository repository;
 
     /**
      * SearchRepository injection from SearchViewModel constructor
@@ -25,18 +30,10 @@ public class SearchViewModel extends ViewModel {
         this.repository = searchRepository;
     }
 
-
-    public void init(String searchQuery) {
-        if (this.searchResponse != null) {
-            return;
-        }
-        searchResponse = repository.getSearchResults(searchQuery);
-    }
-
     /**
      * Expose the LiveData Projects query so the UI can observe it.
      */
-    public LiveData<SearchResponse> getSearchResults() {
+    public MutableLiveData<SearchResponse> getSearchResults() {
         return this.searchResponse;
     }
 
@@ -44,8 +41,31 @@ public class SearchViewModel extends ViewModel {
     public void searchGitHubRepos(@Nullable final String query) {
 
         if (query != null && query.length() > 0) {
-            this.searchResponse = repository.getSearchResults(query, (MutableLiveData<SearchResponse>) this.searchResponse);
+            repository.getSearchResults(query, this.searchResponse, this);
+            System.out.println();
         }
     }
 
+    @Override
+    public void onSearchResultsFetched(SearchResponse searchResponse) {
+
+        postDataToView(searchResponse);
+
+    }
+
+    /**
+     * Method to post the altered / filtered / manipulated data to the view
+     * @param searchResponse altered / manipulated / filtered response
+     */
+    private void postDataToView(SearchResponse searchResponse) {
+
+        this.searchResponse.postValue(searchResponse);
+
+    }
+
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return null;
+    }
 }

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.cc.githubsearchviewmodel.R;
 import com.cc.githubsearchviewmodel.models.SearchResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import hugo.weaving.DebugLog;
@@ -23,15 +22,16 @@ public class SearchResultRvAdapter extends RecyclerView.Adapter<SearchResultRvAd
         this.results = list;
     }
 
+    @NonNull
     @Override
-    public SearchResultViewHolder onCreateViewHolder(ViewGroup parent,
+    public SearchResultViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                      int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         return new SearchResultViewHolder(inflater.inflate(R.layout.rv_item_repo, null));
     }
 
     @Override
-    public void onBindViewHolder(SearchResultViewHolder holder,
+    public void onBindViewHolder(@NonNull SearchResultViewHolder holder,
                                  int position) {
         holder.bind(results.get(position));
     }

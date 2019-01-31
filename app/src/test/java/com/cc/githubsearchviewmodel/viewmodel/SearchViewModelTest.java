@@ -15,7 +15,7 @@ public class SearchViewModelTest {
     private SearchViewModel viewModel;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);// required for the "@Mock" annotations
 
         // Make viewmodel a mock while using mock repository

@@ -9,8 +9,8 @@ import retrofit2.http.Query;
 
 public interface GitHubService {
 
-    /**
-     * @GET declares an HTTP GET request
+    /*
+      @GET declares an HTTP GET request
      * @Path("user") annotation on the userId parameter marks it as a
      * replacement for the {user} placeholder in the @GET path
      */
@@ -20,7 +20,7 @@ public interface GitHubService {
     /**
      * Search with topics supported https://developer.github.com/v3/search/
      * @param term search keywords e.g. "testing topic:android"
-     * @return
+     * @return response from the remote server
      */
     @Headers({"Accept: application/vnd.github.mercy-preview+json"})
     @GET("search/repositories")
