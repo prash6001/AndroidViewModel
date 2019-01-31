@@ -51,16 +51,13 @@ public class MainActivity extends AppCompatActivity implements Injectable {
         //String userLogin = getArguments().getString(UID_KEY);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel.class);
 
-        viewModel.init(binding.etSearchQuery.getText().toString());
+        //viewModel.init(binding.etSearchQuery.getText().toString());
 
         viewModel.getSearchResults().observe(this, searchResponse -> {
 
             // Update UI here
-            System.out.println("Update UI");
 
             if(searchResponse != null && searchResponse.getSearchResults() != null && searchResponse.getSearchResults().size() > 0) {
-
-                //sharedPreferences.putData(AppConstants.FIRST_SEARCH_RESULT, searchResponse.getSearchResults().get(0).getFullName());
 
                 SearchResultRvAdapter rvAdapter = new SearchResultRvAdapter(searchResponse.getSearchResults());
                 binding.rvRepos.setAdapter(rvAdapter);
